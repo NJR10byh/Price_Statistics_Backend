@@ -3,7 +3,7 @@ package tutu.njr10byh.price_statistics.controller.VO;
 import lombok.Data;
 
 @Data
-public class GoodsModelVO {
+public class CommodityVO {
     private String brand;
     private String category;
     private String model;
