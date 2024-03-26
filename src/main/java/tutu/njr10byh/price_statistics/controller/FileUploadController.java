@@ -13,6 +13,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @CrossOrigin
@@ -38,8 +39,9 @@ public class FileUploadController {
     }
 
     private static GoodsModelVO getGoodsModelVO(String line) {
-        String[] fields = line.split(",");
+        String[] fields = line.split(",", -1);
         GoodsModelVO goodsModelVO = new GoodsModelVO();
+        System.out.println(Arrays.toString(fields));
         goodsModelVO.setBrand(StringTools.isNullOrEmpty(fields[0]) ? null : fields[0].trim());
         goodsModelVO.setCategory(StringTools.isNullOrEmpty(fields[1]) ? null : fields[1].trim());
         goodsModelVO.setModel(StringTools.isNullOrEmpty(fields[2]) ? null : fields[2].trim());
