@@ -33,6 +33,9 @@ public class FileUploadController {
             BufferedReader br = new BufferedReader(new InputStreamReader(file.getInputStream()));
             String line;
             while ((line = br.readLine()) != null) {
+                if (line.trim().isEmpty()) {
+                    continue; // 如果行为空，则直接跳过
+                }
                 CommodityVO commodityVO = getmodelVO(line);
                 dataList.add(commodityVO);
             }
@@ -45,13 +48,14 @@ public class FileUploadController {
     }
 
     private static CommodityVO getmodelVO(String line) {
-        String[] fields = line.split(",", -1);
+        String[] fields = line.split("，", -1);
         CommodityVO commodityVO = new CommodityVO();
         commodityVO.setBrand(StringTools.isNullOrEmpty(fields[0]) ? null : fields[0].trim());
-        commodityVO.setCategory(StringTools.isNullOrEmpty(fields[1]) ? null : fields[1].trim());
-        commodityVO.setModel(StringTools.isNullOrEmpty(fields[2]) ? null : fields[2].trim());
-        commodityVO.setChannel_price(StringTools.isNullOrEmpty(fields[3]) ? null : fields[3].trim());
-        commodityVO.setSupplier(StringTools.isNullOrEmpty(fields[4]) ? null : fields[4].trim());
+        commodityVO.setModel(StringTools.isNullOrEmpty(fields[1]) ? null : fields[1].trim());
+        commodityVO.setPrice(StringTools.isNullOrEmpty(fields[2]) ? null : Double.parseDouble(fields[2].trim()));
+        commodityVO.setSupplier(StringTools.isNullOrEmpty(fields[3]) ? null : fields[3].trim());
+        // 检查 remark 是否为空，若为空则设置为 "非偏远"
+        commodityVO.setRemark(StringTools.isNullOrEmpty(fields[4]) ? "非偏远" : fields[4].trim());
         return commodityVO;
     }
 }

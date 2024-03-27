@@ -18,6 +18,7 @@ import java.util.List;
 
 @Service
 public class CommodityServiceImpl implements CommodityService {
+
     @Autowired
     private CommodityMapper commodityMapper;
 
@@ -25,17 +26,11 @@ public class CommodityServiceImpl implements CommodityService {
     public Page<Commodity> getCommodityList(SearchVO searchVO) throws BusinessException {
         QueryWrapper<Commodity> wrapper = new QueryWrapper<Commodity>().isNotNull("model");
         // 品牌不为空时模糊查询
-        wrapper.like(StringUtils.isNotBlank(searchVO.getSearchCondition().getBrand()),
-                "brand",
-                searchVO.getSearchCondition().getBrand());
-        // 品类不为空时模糊查询
-        wrapper.like(StringUtils.isNotBlank(searchVO.getSearchCondition().getCategory()),
-                "category",
-                searchVO.getSearchCondition().getCategory());
+        wrapper.like(StringUtils.isNotBlank(searchVO.getSearchCondition().getBrand()), "brand", searchVO.getSearchCondition().getBrand());
         // 型号不为空时模糊查询
-        wrapper.like(StringUtils.isNotBlank(searchVO.getSearchCondition().getModel()),
-                "model",
-                searchVO.getSearchCondition().getModel());
+        wrapper.like(StringUtils.isNotBlank(searchVO.getSearchCondition().getModel()), "model", searchVO.getSearchCondition().getModel());
+        // 供应商不为空时模糊查询
+        wrapper.like(StringUtils.isNotBlank(searchVO.getSearchCondition().getSupplier()), "supplier", searchVO.getSearchCondition().getSupplier());
         Page<Commodity> page = new Page<>(searchVO.getCurrPage(), searchVO.getSize());
         return commodityMapper.selectPage(page, wrapper);
     }
@@ -46,17 +41,17 @@ public class CommodityServiceImpl implements CommodityService {
             for (CommodityVO commodityVO : datalist) {
                 Commodity commodity = new Commodity();
                 commodity.setBrand(commodityVO.getBrand());
-                commodity.setCategory(commodityVO.getCategory());
                 commodity.setModel(commodityVO.getModel());
+                commodity.setPrice(commodityVO.getPrice());
                 commodity.setSupplier(commodityVO.getSupplier());
-                commodity.setChannel_price(commodityVO.getChannel_price());
+                commodity.setRemark(commodityVO.getRemark());
                 commodityMapper.insert(commodity);
             }
         } catch (DuplicateKeyException e) {
             throw new BusinessException(EmBusinessError.PARAMETER_VALIDATION_ERROR, "该型号已存在");
         }
     }
-    
+
     @Override
     public Integer deleteCommodity(String model) throws BusinessException {
         return 1;

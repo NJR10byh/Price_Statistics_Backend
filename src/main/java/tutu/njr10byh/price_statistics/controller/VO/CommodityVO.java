@@ -5,8 +5,8 @@ import lombok.Data;
 @Data
 public class CommodityVO {
     private String brand;
-    private String category;
     private String model;
-    private String channel_price;
+    private Double price;
     private String supplier;
+    private String remark;
 }
